@@ -122,7 +122,7 @@ export class AuthService {
     const ipCount = await this.prisma.ipRegistration.count({
       where: { ip, createdAt: { gte: twentyFourHoursAgo } },
     });
-    if (ipCount >= 5) {
+    if (ipCount >= 50) {
       throw new BadRequestException('Đã vượt quá giới hạn đăng ký. Vui lòng thử lại sau');
     }
 
