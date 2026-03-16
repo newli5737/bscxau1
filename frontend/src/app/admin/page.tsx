@@ -30,7 +30,7 @@ export default function AdminPage() {
   const [bankForm, setBankForm] = useState({ bankCode: '', bankName: '', accountNumber: '', accountHolder: '' });
 
   useEffect(() => {
-    if (!loading && (!user || !user.isAdmin)) router.push('/login');
+    if (!loading && (!user || !user.isAdmin)) router.push('/admin/login');
   }, [loading, user, router]);
 
   // WebSocket connection for notifications
