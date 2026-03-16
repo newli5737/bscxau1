@@ -3,17 +3,29 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { adminAPI } from '@/lib/api';
-import { Settings, BarChart3, Users, Gem, ArrowDownCircle, ArrowUpCircle, Plus, Check, X, ArrowLeft, AlertTriangle, Copy, Edit3, Save, LogOut, Landmark, Trash2, TrendingUp, Bell } from 'lucide-react';
+import { Settings, BarChart3, Users, Gem, ArrowDownCircle, ArrowUpCircle, Plus, Check, X, ArrowLeft, AlertTriangle, Copy, Edit3, Save, LogOut, Landmark, Trash2, TrendingUp, Bell, RefreshCw } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
 
 type Tab = 'stats' | 'users' | 'products' | 'investments' | 'deposits' | 'withdrawals' | 'banks';
+const validTabs: Tab[] = ['stats', 'users', 'products', 'investments', 'deposits', 'withdrawals', 'banks'];
+
+function getInitialTab(): Tab {
+  if (typeof window === 'undefined') return 'stats';
+  const hash = window.location.hash.replace('#', '') as Tab;
+  return validTabs.includes(hash) ? hash : 'stats';
+}
 
 interface Notification { id: number; type: string; message: string; time: Date; }
 
 export default function AdminPage() {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
-  const [tab, setTab] = useState<Tab>('stats');
+  const [tab, setTabState] = useState<Tab>(getInitialTab);
+
+  const setTab = (newTab: Tab) => {
+    setTabState(newTab);
+    window.location.hash = newTab;
+  };
   const [data, setData] = useState<any>(null);
   const [msg, setMsg] = useState('');
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -347,10 +359,17 @@ export default function AdminPage() {
       )}
 
       {/* Deposits */}
-      {tab === 'deposits' && Array.isArray(data) && (
+      {tab === 'deposits' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {data.length === 0 && <p style={{ textAlign: 'center', color: '#64748b', padding: '32px' }}>Không có yêu cầu nạp</p>}
-          {data.map((d: any) => (
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p style={{ fontSize: '13px', color: '#94a3b8' }}>Yêu cầu nạp tiền chờ duyệt</p>
+            <button onClick={loadData} style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '6px 12px', background: 'rgba(0,245,212,0.1)', color: '#00f5d4', borderRadius: '8px', border: '1px solid rgba(0,245,212,0.2)', cursor: 'pointer', fontSize: '12px', fontWeight: 500 }}>
+              <RefreshCw size={13} /> Tải lại
+            </button>
+          </div>
+          {!Array.isArray(data) && <p style={{ textAlign: 'center', color: '#64748b', padding: '32px' }}>Đang tải...</p>}
+          {Array.isArray(data) && data.length === 0 && <p style={{ textAlign: 'center', color: '#64748b', padding: '32px' }}>Không có yêu cầu nạp</p>}
+          {Array.isArray(data) && data.map((d: any) => (
             <div key={d.id} className="glass-card" style={{ padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
                 <p style={{ fontWeight: 500, fontSize: '14px' }}>{d.user?.username || 'N/A'}</p>
@@ -367,10 +386,17 @@ export default function AdminPage() {
       )}
 
       {/* Withdrawals */}
-      {tab === 'withdrawals' && Array.isArray(data) && (
+      {tab === 'withdrawals' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {data.length === 0 && <p style={{ textAlign: 'center', color: '#64748b', padding: '32px' }}>Không có yêu cầu rút</p>}
-          {data.map((w: any) => (
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p style={{ fontSize: '13px', color: '#94a3b8' }}>Yêu cầu rút tiền chờ duyệt</p>
+            <button onClick={loadData} style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '6px 12px', background: 'rgba(0,245,212,0.1)', color: '#00f5d4', borderRadius: '8px', border: '1px solid rgba(0,245,212,0.2)', cursor: 'pointer', fontSize: '12px', fontWeight: 500 }}>
+              <RefreshCw size={13} /> Tải lại
+            </button>
+          </div>
+          {!Array.isArray(data) && <p style={{ textAlign: 'center', color: '#64748b', padding: '32px' }}>Đang tải...</p>}
+          {Array.isArray(data) && data.length === 0 && <p style={{ textAlign: 'center', color: '#64748b', padding: '32px' }}>Không có yêu cầu rút</p>}
+          {Array.isArray(data) && data.map((w: any) => (
             <div key={w.id} className="glass-card" style={{ padding: '12px' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '8px' }}>
                 <div>
