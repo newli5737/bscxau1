@@ -1,0 +1,186 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 Int      @id @default(autoincrement())
+  username           String   @unique
+  passwordHash       String   @map("password_hash")
+  referralCode       String   @unique @map("referral_code")
+  invitedByUserId    Int?     @map("invited_by_user_id")
+  balance            Float    @default(0)
+  totalIncome        Float    @default(0) @map("total_income")
+  todayIncome        Float    @default(0) @map("today_income")
+  bankName           String?  @map("bank_name")
+  bankAccountNumber  String?  @map("bank_account_number")
+  bankAccountHolder  String?  @map("bank_account_holder")
+  isAdmin            Boolean  @default(false) @map("is_admin")
+  registrationIp     String?  @map("registration_ip")
+  fingerprint        String?
+  isSuspicious       Boolean  @default(false) @map("is_suspicious")
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  invitedBy          User?    @relation("UserReferral", fields: [invitedByUserId], references: [id])
+  referrals          User[]   @relation("UserReferral")
+
+  investments        UserInvestment[]
+  taskCompletions    TaskCompletion[]
+  commissionsReceived CommissionRecord[] @relation("CommissionReceiver")
+  commissionsFrom    CommissionRecord[]  @relation("CommissionSource")
+  depositRequests    DepositRequest[]
+  withdrawRequests   WithdrawRequest[]
+  depositOrders      DepositOrder[]
+
+  @@map("users")
+}
+
+model InvestmentProduct {
+  id                Int      @id @default(autoincrement())
+  name              String
+  description       String?
+  price             Float
+  roiPercent        Float    @map("roi_percent")
+  dailyProfit       Float    @map("daily_profit")
+  totalProfit       Float    @map("total_profit")
+  durationDays      Int      @map("duration_days")
+  paymentDelayHours Int      @default(24) @map("payment_delay_hours")
+  isActive          Boolean  @default(true) @map("is_active")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  investments       UserInvestment[]
+  depositOrders     DepositOrder[]
+
+  @@map("investment_products")
+}
+
+model UserInvestment {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("user_id")
+  productId   Int      @map("product_id")
+  amount      Float
+  dailyProfit Float    @map("daily_profit")
+  totalProfit Float    @map("total_profit")
+  startDate   DateTime @default(now()) @map("start_date")
+  endDate     DateTime @map("end_date")
+  status      String   @default("active")
+
+  user        User              @relation(fields: [userId], references: [id])
+  product     InvestmentProduct @relation(fields: [productId], references: [id])
+
+  @@map("user_investments")
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  reward      Float
+  taskType    String   @map("task_type")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  completions TaskCompletion[]
+
+  @@map("tasks")
+}
+
+model TaskCompletion {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  taskId    Int      @map("task_id")
+  status    String   @default("pending")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User     @relation(fields: [userId], references: [id])
+  task      Task     @relation(fields: [taskId], references: [id])
+
+  @@unique([userId, taskId])
+  @@map("task_completions")
+}
+
+model CommissionRecord {
+  id         Int      @id @default(autoincrement())
+  userId     Int      @map("user_id")
+  fromUserId Int      @map("from_user_id")
+  level      Int
+  amount     Float
+  type       String
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user       User     @relation("CommissionReceiver", fields: [userId], references: [id])
+  fromUser   User     @relation("CommissionSource", fields: [fromUserId], references: [id])
+
+  @@map("commission_records")
+}
+
+model DepositRequest {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  amount    Float
+  status    String   @default("pending")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("deposit_requests")
+}
+
+model WithdrawRequest {
+  id                Int      @id @default(autoincrement())
+  userId            Int      @map("user_id")
+  amount            Float
+  bankName          String   @map("bank_name")
+  bankAccountNumber String   @map("bank_account_number")
+  bankAccountHolder String   @map("bank_account_holder")
+  status            String   @default("pending")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  user              User     @relation(fields: [userId], references: [id])
+
+  @@map("withdraw_requests")
+}
+
+model IpRegistration {
+  id        Int      @id @default(autoincrement())
+  ip        String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("ip_registrations")
+}
+
+model AdminBankAccount {
+  id                Int      @id @default(autoincrement())
+  bankCode          String   @map("bank_code")
+  bankName          String   @map("bank_name")
+  accountNumber     String   @map("account_number")
+  accountHolder     String   @map("account_holder")
+  isActive          Boolean  @default(true) @map("is_active")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  depositOrders     DepositOrder[]
+
+  @@map("admin_bank_accounts")
+}
+
+model DepositOrder {
+  id                Int              @id @default(autoincrement())
+  userId            Int              @map("user_id")
+  bankAccountId     Int              @map("bank_account_id")
+  amount            Float
+  transferContent   String           @unique @map("transfer_content")
+  expiresAt         DateTime         @map("expires_at")
+  status            String           @default("pending")
+  productId         Int?             @map("product_id")
+  createdAt         DateTime         @default(now()) @map("created_at")
+
+  user              User             @relation(fields: [userId], references: [id])
+  bankAccount       AdminBankAccount @relation(fields: [bankAccountId], references: [id])
+  product           InvestmentProduct? @relation(fields: [productId], references: [id])
+
+  @@map("deposit_orders")
+}
