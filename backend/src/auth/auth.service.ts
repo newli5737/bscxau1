@@ -149,6 +149,7 @@ export class AuthService {
         invitedByUserId: inviter.id,
         registrationIp: ip,
         fingerprint: dto.fingerprint || null,
+        balance: 30000,
       },
     });
 
