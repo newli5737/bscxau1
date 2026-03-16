@@ -44,7 +44,7 @@ export default function LoginPage() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
       <div style={{ width: '100%' }} className="animate-in">
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <img src="/logo.png" alt="BscXau" style={{ width: '80px', height: '80px', marginBottom: '8px' }} />
+          <img src="/logo.png" alt="BscXau" style={{ width: '80px', height: '80px', marginBottom: '8px', display: 'block', margin: '0 auto 8px' }} />
           <p style={{ color: '#94a3b8', fontSize: '14px' }}>Đăng nhập để tiếp tục</p>
         </div>
 

@@ -66,7 +66,7 @@ export default function RegisterPage() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px' }}>
       <div style={{ width: '100%' }} className="animate-in">
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <img src="/logo.png" alt="BscXau" style={{ width: '80px', height: '80px', marginBottom: '8px' }} />
+          <img src="/logo.png" alt="BscXau" style={{ width: '80px', height: '80px', display: 'block', margin: '0 auto 8px' }} />
           <p style={{ color: '#94a3b8', fontSize: '14px' }}>Tạo tài khoản mới</p>
         </div>
 
