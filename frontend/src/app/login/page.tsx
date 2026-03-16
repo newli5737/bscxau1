@@ -44,7 +44,7 @@ export default function LoginPage() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
       <div style={{ width: '100%' }} className="animate-in">
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <h1 className="neon-text" style={{ fontSize: '32px', fontWeight: 700, marginBottom: '8px' }}>BscXau</h1>
+          <img src="/logo.png" alt="BscXau" style={{ width: '80px', height: '80px', marginBottom: '8px' }} />
           <p style={{ color: '#94a3b8', fontSize: '14px' }}>Đăng nhập để tiếp tục</p>
         </div>
 
