@@ -8,7 +8,7 @@ import { RefreshCw } from 'lucide-react';
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
-    username: '', password: '', confirmPassword: '', referralCode: '', captchaAnswer: '',
+    phone: '', password: '', confirmPassword: '', referralCode: '', captchaAnswer: '',
   });
   const [captcha, setCaptcha] = useState({ id: '', image: '' });
   const [error, setError] = useState('');
@@ -26,9 +26,18 @@ export default function RegisterPage() {
 
   useEffect(() => { loadCaptcha(); }, []);
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value.replace(/\D/g, '').slice(0, 9);
+    setForm({ ...form, phone: val });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (form.phone.length !== 9) {
+      setError('Số điện thoại phải đủ 9 số');
+      return;
+    }
     if (form.password !== form.confirmPassword) {
       setError('Mật khẩu không khớp');
       return;
@@ -36,7 +45,11 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const res = await authAPI.register({
-        ...form,
+        username: `+84${form.phone}`,
+        password: form.password,
+        confirmPassword: form.confirmPassword,
+        referralCode: form.referralCode,
+        captchaAnswer: form.captchaAnswer,
         captchaId: captcha.id,
       });
       login(res.token, res.user);
@@ -49,9 +62,6 @@ export default function RegisterPage() {
     }
   };
 
-  const update = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm({ ...form, [field]: e.target.value });
-
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px' }}>
       <div style={{ width: '100%' }} className="animate-in">
@@ -63,22 +73,26 @@ export default function RegisterPage() {
         <div className="glass-card" style={{ padding: '24px' }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
-              <label style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '6px', display: 'block' }}>Tên đăng nhập</label>
-              <input type="text" className="input-field" placeholder="Ít nhất 3 ký tự" value={form.username} onChange={update('username')} required minLength={3} />
+              <label style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '6px', display: 'block' }}>Số điện thoại</label>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <span style={{ background: 'rgba(30,41,59,0.8)', border: '1px solid rgba(0,245,212,0.15)', borderRadius: '10px', padding: '10px 12px', color: '#00f5d4', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap' }}>+84</span>
+                <input type="tel" className="input-field" placeholder="Nhập 9 số" value={form.phone} onChange={handlePhoneChange} required style={{ flex: 1 }} />
+              </div>
+              <p style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>VD: +84 987 654 321 → nhập 987654321</p>
             </div>
             <div>
               <label style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '6px', display: 'block' }}>Mật khẩu</label>
-              <input type="password" className="input-field" placeholder="Ít nhất 6 ký tự" value={form.password} onChange={update('password')} required minLength={6} />
+              <input type="password" className="input-field" placeholder="Ít nhất 6 ký tự" value={form.password} onChange={e => setForm({...form, password: e.target.value})} required minLength={6} />
             </div>
             <div>
               <label style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '6px', display: 'block' }}>Nhập lại mật khẩu</label>
-              <input type="password" className="input-field" placeholder="Xác nhận mật khẩu" value={form.confirmPassword} onChange={update('confirmPassword')} required />
+              <input type="password" className="input-field" placeholder="Xác nhận mật khẩu" value={form.confirmPassword} onChange={e => setForm({...form, confirmPassword: e.target.value})} required />
             </div>
             <div>
               <label style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '6px', display: 'block' }}>
                 Mã giới thiệu <span style={{ color: '#f87171' }}>*</span>
               </label>
-              <input type="text" className="input-field" placeholder="Nhập mã giới thiệu" value={form.referralCode} onChange={update('referralCode')} required />
+              <input type="text" className="input-field" placeholder="Nhập mã giới thiệu" value={form.referralCode} onChange={e => setForm({...form, referralCode: e.target.value})} required />
             </div>
             <div>
               <label style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '8px', display: 'block' }}>Mã xác nhận</label>
@@ -92,7 +106,7 @@ export default function RegisterPage() {
                   <RefreshCw size={18} />
                 </button>
               </div>
-              <input type="text" className="input-field" placeholder="Nhập kết quả phép tính" value={form.captchaAnswer} onChange={update('captchaAnswer')} required />
+              <input type="text" className="input-field" placeholder="Nhập kết quả phép tính" value={form.captchaAnswer} onChange={e => setForm({...form, captchaAnswer: e.target.value})} required />
             </div>
 
             {error && (
