@@ -422,19 +422,42 @@ export default function AdminPage() {
             </div>
           </div>
           {Array.isArray(data) && data.map((b: any) => (
-            <div key={b.id} className="glass-card" style={{ padding: '12px', opacity: b.isActive ? 1 : 0.5 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div key={b.id} className="glass-card" style={{ padding: '12px', opacity: b.isActive ? 1 : 0.6 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
-                  <p style={{ fontWeight: 500, fontSize: '14px' }}>{b.bankName}</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                    <p style={{ fontWeight: 500, fontSize: '14px' }}>{b.bankName}</p>
+                    <span style={{
+                      fontSize: '10px', fontWeight: 600, padding: '2px 8px', borderRadius: '6px',
+                      background: b.isActive ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.15)',
+                      color: b.isActive ? '#4ade80' : '#f87171',
+                      border: `1px solid ${b.isActive ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'}`,
+                    }}>{b.isActive ? 'Active' : 'Inactive'}</span>
+                  </div>
                   <p style={{ fontSize: '12px', color: '#94a3b8' }}>{b.accountNumber} - {b.accountHolder}</p>
                   <p style={{ fontSize: '11px', color: '#64748b' }}>Code: {b.bankCode}</p>
                 </div>
-                <button onClick={async () => {
-                  try { await adminAPI.deleteBankAccount(b.id); showMsg('Đã xóa!'); loadData(); }
-                  catch(err: any) { showMsg(err.message); }
-                }} style={{ padding: '6px', background: 'rgba(239,68,68,0.15)', color: '#f87171', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>
-                  <Trash2 size={14} />
-                </button>
+                <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
+                  <button onClick={async () => {
+                    try {
+                      await adminAPI.updateBankAccount(b.id, { isActive: !b.isActive });
+                      showMsg(b.isActive ? 'Đã tắt tài khoản!' : 'Đã kích hoạt tài khoản!');
+                      loadData();
+                    } catch(err: any) { showMsg(err.message); }
+                  }} title={b.isActive ? 'Tắt' : 'Kích hoạt'} style={{
+                    padding: '6px 10px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontSize: '11px', fontWeight: 500,
+                    background: b.isActive ? 'rgba(245,158,11,0.15)' : 'rgba(34,197,94,0.15)',
+                    color: b.isActive ? '#fbbf24' : '#4ade80',
+                  }}>
+                    {b.isActive ? 'Tắt' : 'Bật'}
+                  </button>
+                  <button onClick={async () => {
+                    try { await adminAPI.deleteBankAccount(b.id); showMsg('Đã xóa!'); loadData(); }
+                    catch(err: any) { showMsg(err.message); }
+                  }} style={{ padding: '6px', background: 'rgba(239,68,68,0.15)', color: '#f87171', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>
+                    <Trash2 size={14} />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
