@@ -104,7 +104,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private captchaService: CaptchaService,
-  ) {}
+  ) { }
 
   async register(dto: RegisterDto, ip: string) {
     // Validate captcha
@@ -122,7 +122,7 @@ export class AuthService {
     const ipCount = await this.prisma.ipRegistration.count({
       where: { ip, createdAt: { gte: twentyFourHoursAgo } },
     });
-    if (ipCount >= 3) {
+    if (ipCount >= 5) {
       throw new BadRequestException('Đã vượt quá giới hạn đăng ký. Vui lòng thử lại sau');
     }
 
