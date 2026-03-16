@@ -13,6 +13,11 @@ async function proxyRequest(req: NextRequest, path: string) {
     headers['Authorization'] = authHeader;
   }
 
+  // Forward real client IP to backend
+  const forwarded = req.headers.get('x-forwarded-for');
+  const realIp = forwarded ? forwarded.split(',')[0].trim() : req.headers.get('x-real-ip') || req.ip || '0.0.0.0';
+  headers['X-Forwarded-For'] = realIp;
+
   const init: RequestInit = {
     method: req.method,
     headers,
