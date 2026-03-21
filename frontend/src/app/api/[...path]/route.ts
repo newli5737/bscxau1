@@ -15,7 +15,7 @@ async function proxyRequest(req: NextRequest, path: string) {
 
   // Forward real client IP to backend
   const forwarded = req.headers.get('x-forwarded-for');
-  const realIp = forwarded ? forwarded.split(',')[0].trim() : req.headers.get('x-real-ip') || req.ip || '0.0.0.0';
+  const realIp = forwarded ? forwarded.split(',')[0].trim() : req.headers.get('x-real-ip') || '0.0.0.0';
   headers['X-Forwarded-For'] = realIp;
 
   const init: RequestInit = {
