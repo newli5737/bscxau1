@@ -43,6 +43,7 @@ export default function AdminPage() {
 
   const [editingRefCode, setEditingRefCode] = useState<{ id: number; code: string } | null>(null);
   const [bankForm, setBankForm] = useState({ bankCode: '', bankName: '', accountNumber: '', accountHolder: '' });
+  const [showBankDialog, setShowBankDialog] = useState(false);
 
   useEffect(() => {
     if (!loading && (!user || !user.isAdmin)) router.push('/admin/login');
@@ -474,33 +475,9 @@ export default function AdminPage() {
       {/* Banks */}
       {tab === 'banks' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div className="glass-card admin-form-wide" style={{ padding: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-              <Plus size={16} color="#00f5d4" />
-              <h3 style={{ fontWeight: 600, fontSize: '14px' }}>Thêm tài khoản ngân hàng</h3>
-            </div>
-            <div className="admin-form-inline" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <select className="input-field" value={bankForm.bankCode} onChange={e => {
-                const opt = e.target.options[e.target.selectedIndex];
-                setBankForm({...bankForm, bankCode: e.target.value, bankName: opt.dataset.name || e.target.value });
-              }}>
-                <option value="">-- Chọn ngân hàng --</option>
-                {[{c:'MBBank',n:'MB Bank'},{c:'VCB',n:'Vietcombank'},{c:'TCB',n:'Techcombank'},{c:'ACB',n:'ACB'},{c:'BIDV',n:'BIDV'},{c:'VietinBank',n:'VietinBank'},{c:'TPBank',n:'TPBank'},{c:'VPBank',n:'VPBank'},{c:'SHB',n:'SHB'},{c:'MSB',n:'MSB'},{c:'Agribank',n:'Agribank'},{c:'Sacombank',n:'Sacombank'},{c:'HDBank',n:'HDBank'},{c:'OCB',n:'OCB'},{c:'LienVietPostBank',n:'LienVietPostBank'},{c:'SeABank',n:'SeABank'},{c:'VIB',n:'VIB'},{c:'Eximbank',n:'Eximbank'},{c:'NCB',n:'NCB'},{c:'NamABank',n:'NamABank'}]
-                  .map(b => <option key={b.c} value={b.c} data-name={b.n}>{b.n}</option>)}
-              </select>
-              <input className="input-field" placeholder="Số tài khoản" value={bankForm.accountNumber} onChange={e => setBankForm({...bankForm, accountNumber: e.target.value})} />
-              <input className="input-field" placeholder="Tên chủ tài khoản" value={bankForm.accountHolder} onChange={e => setBankForm({...bankForm, accountHolder: e.target.value})} />
-              <button onClick={async () => {
-                if (!bankForm.bankCode || !bankForm.accountNumber || !bankForm.accountHolder) { showMsg('Vui lòng nhập đầy đủ'); return; }
-                try {
-                  await adminAPI.createBankAccount(bankForm);
-                  showMsg('Đã thêm tài khoản!');
-                  setBankForm({ bankCode: '', bankName: '', accountNumber: '', accountHolder: '' });
-                  loadData();
-                } catch(err: any) { showMsg(err.message); }
-              }} className="gradient-btn admin-btn-submit">Thêm tài khoản</button>
-            </div>
-          </div>
+          <button onClick={() => { setBankForm({ bankCode: '', bankName: '', accountNumber: '', accountHolder: '' }); setShowBankDialog(true); }} className="gradient-btn admin-btn-compact" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+            <Plus size={16} /> Thêm tài khoản ngân hàng
+          </button>
           {Array.isArray(data) && data.map((b: any) => (
             <div key={b.id} className="glass-card" style={{ padding: '12px', opacity: b.isActive ? 1 : 0.6 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -541,6 +518,40 @@ export default function AdminPage() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Bank Dialog */}
+      {showBankDialog && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: '16px' }} onClick={() => setShowBankDialog(false)}>
+          <div className="glass-card" style={{ padding: '20px', width: '100%', maxWidth: '400px' }} onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 style={{ fontWeight: 600, fontSize: '16px' }}>Thêm tài khoản ngân hàng</h3>
+              <button onClick={() => setShowBankDialog(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8' }}><X size={20} /></button>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <select className="input-field" value={bankForm.bankCode} onChange={e => {
+                const opt = e.target.options[e.target.selectedIndex];
+                setBankForm({...bankForm, bankCode: e.target.value, bankName: opt.dataset.name || e.target.value });
+              }}>
+                <option value="">-- Chọn ngân hàng --</option>
+                {[{c:'MBBank',n:'MB Bank'},{c:'VCB',n:'Vietcombank'},{c:'TCB',n:'Techcombank'},{c:'ACB',n:'ACB'},{c:'BIDV',n:'BIDV'},{c:'VietinBank',n:'VietinBank'},{c:'TPBank',n:'TPBank'},{c:'VPBank',n:'VPBank'},{c:'SHB',n:'SHB'},{c:'MSB',n:'MSB'},{c:'Agribank',n:'Agribank'},{c:'Sacombank',n:'Sacombank'},{c:'HDBank',n:'HDBank'},{c:'OCB',n:'OCB'},{c:'LienVietPostBank',n:'LienVietPostBank'},{c:'SeABank',n:'SeABank'},{c:'VIB',n:'VIB'},{c:'Eximbank',n:'Eximbank'},{c:'NCB',n:'NCB'},{c:'NamABank',n:'NamABank'}]
+                  .map(b => <option key={b.c} value={b.c} data-name={b.n}>{b.n}</option>)}
+              </select>
+              <input className="input-field" placeholder="Số tài khoản" value={bankForm.accountNumber} onChange={e => setBankForm({...bankForm, accountNumber: e.target.value})} />
+              <input className="input-field" placeholder="Tên chủ tài khoản" value={bankForm.accountHolder} onChange={e => setBankForm({...bankForm, accountHolder: e.target.value})} />
+              <button onClick={async () => {
+                if (!bankForm.bankCode || !bankForm.accountNumber || !bankForm.accountHolder) { showMsg('Vui lòng nhập đầy đủ'); return; }
+                try {
+                  await adminAPI.createBankAccount(bankForm);
+                  showMsg('Đã thêm tài khoản!');
+                  setBankForm({ bankCode: '', bankName: '', accountNumber: '', accountHolder: '' });
+                  setShowBankDialog(false);
+                  loadData();
+                } catch(err: any) { showMsg(err.message); }
+              }} className="gradient-btn">Thêm tài khoản</button>
+            </div>
+          </div>
         </div>
       )}
     </div>
