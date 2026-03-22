@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-      <div style={{ width: '100%' }} className="animate-in">
+      <div style={{ width: '100%', maxWidth: '400px' }} className="animate-in">
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{
             width: '64px', height: '64px', margin: '0 auto 16px',
