@@ -6,8 +6,14 @@ import { adminAPI } from '@/lib/api';
 import { Settings, BarChart3, Users, Gem, ArrowDownCircle, ArrowUpCircle, Plus, Check, X, ArrowLeft, AlertTriangle, Copy, Edit3, Save, LogOut, Landmark, Trash2, TrendingUp, Bell, RefreshCw } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
 
-type Tab = 'stats' | 'users' | 'products' | 'investments' | 'deposits' | 'withdrawals' | 'banks';
-const validTabs: Tab[] = ['stats', 'users', 'products', 'investments', 'deposits', 'withdrawals', 'banks'];
+type Tab = 'stats' | 'users' | 'products' | 'investments' | 'deposits' | 'withdrawals' | 'banks' | 'config';
+const validTabs: Tab[] = ['stats', 'users', 'products', 'investments', 'deposits', 'withdrawals', 'banks', 'config'];
+
+const THEMES = {
+  cyan: { '--neon-cyan': '#00f5d4', '--neon-blue': '#00bbf9', '--dark-bg': '#0a0e27', gradient: 'linear-gradient(135deg, #00f5d4 0%, #00bbf9 100%)' },
+  red: { '--neon-cyan': '#ff4757', '--neon-blue': '#ff6b81', '--dark-bg': '#1a0a0e', gradient: 'linear-gradient(135deg, #ff4757 0%, #ff6b81 100%)' },
+} as const;
+type ThemeKey = keyof typeof THEMES;
 
 function getInitialTab(): Tab {
   if (typeof window === 'undefined') return 'stats';
@@ -37,6 +43,29 @@ export default function AdminPage() {
   const [productForm, setProductForm] = useState({
     name: '', description: '', price: 0, roiPercent: 0, dailyProfit: 0, totalProfit: 0, durationDays: 0, paymentDelayHours: 24,
   });
+  const [showProductDialog, setShowProductDialog] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<any>(null);
+  const [theme, setTheme] = useState<ThemeKey>('cyan');
+
+  // Load theme from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('bscxau-theme') as ThemeKey;
+    if (saved && THEMES[saved]) { setTheme(saved); applyTheme(saved); }
+  }, []);
+
+  const applyTheme = (t: ThemeKey) => {
+    const vars = THEMES[t];
+    document.documentElement.style.setProperty('--neon-cyan', vars['--neon-cyan']);
+    document.documentElement.style.setProperty('--neon-blue', vars['--neon-blue']);
+    document.documentElement.style.setProperty('--dark-bg', vars['--dark-bg']);
+  };
+
+  const switchTheme = (t: ThemeKey) => {
+    setTheme(t);
+    localStorage.setItem('bscxau-theme', t);
+    applyTheme(t);
+    showMsg(`Đã chuyển sang theme ${t === 'cyan' ? 'Xanh Cyan' : 'Đỏ'}`);
+  };
 
   const [editingRefCode, setEditingRefCode] = useState<{ id: number; code: string } | null>(null);
   const [bankForm, setBankForm] = useState({ bankCode: '', bankName: '', accountNumber: '', accountHolder: '' });
@@ -133,8 +162,32 @@ export default function AdminPage() {
       await adminAPI.createProduct(productForm);
       showMsg('Tạo gói đầu tư thành công!');
       setProductForm({ name: '', description: '', price: 0, roiPercent: 0, dailyProfit: 0, totalProfit: 0, durationDays: 0, paymentDelayHours: 24 });
+      setShowProductDialog(false);
       loadData();
     } catch (err: any) { showMsg(err.message); }
+  };
+
+  const updateProduct = async () => {
+    if (!editingProduct) return;
+    try {
+      await adminAPI.updateProduct(editingProduct.id, productForm);
+      showMsg('Đã cập nhật gói đầu tư!');
+      setEditingProduct(null);
+      setShowProductDialog(false);
+      loadData();
+    } catch (err: any) { showMsg(err.message); }
+  };
+
+  const openEditProduct = (p: any) => {
+    setEditingProduct(p);
+    setProductForm({ name: p.name, description: p.description || '', price: p.price, roiPercent: p.roiPercent, dailyProfit: p.dailyProfit, totalProfit: p.totalProfit, durationDays: p.durationDays, paymentDelayHours: p.paymentDelayHours });
+    setShowProductDialog(true);
+  };
+
+  const openCreateProduct = () => {
+    setEditingProduct(null);
+    setProductForm({ name: '', description: '', price: 0, roiPercent: 0, dailyProfit: 0, totalProfit: 0, durationDays: 0, paymentDelayHours: 24 });
+    setShowProductDialog(true);
   };
 
   const handleSaveRefCode = async () => {
@@ -156,10 +209,10 @@ export default function AdminPage() {
     { key: 'users', label: 'Users', icon: Users },
     { key: 'products', label: 'Gói ĐT', icon: Gem },
     { key: 'investments', label: 'ĐT User', icon: TrendingUp },
-
     { key: 'deposits', label: 'Nạp', icon: ArrowDownCircle },
     { key: 'withdrawals', label: 'Rút', icon: ArrowUpCircle },
     { key: 'banks', label: 'NH', icon: Landmark },
+    { key: 'config', label: 'Cấu hình', icon: Settings },
   ];
 
   return (
@@ -296,37 +349,59 @@ export default function AdminPage() {
 
       {/* Products */}
       {tab === 'products' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div className="glass-card" style={{ padding: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-              <Plus size={16} color="#00f5d4" />
-              <h3 style={{ fontWeight: 600, fontSize: '14px' }}>Tạo gói đầu tư mới</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <button onClick={openCreateProduct} className="gradient-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+            <Plus size={16} /> Tạo gói đầu tư mới
+          </button>
+          {Array.isArray(data) && data.map((p: any) => (
+            <div key={p.id} className="glass-card" style={{ padding: '12px', cursor: 'pointer' }} onClick={() => openEditProduct(p)}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                  <p style={{ fontWeight: 500, fontSize: '14px' }}>{p.name}</p>
+                  <p style={{ fontSize: '12px', color: '#94a3b8' }}>{fmt(p.price)} đ | ROI {p.roiPercent}% | {p.durationDays} ngày</p>
+                  <p style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>LN/ngày: {fmt(p.dailyProfit)} đ | Tổng: {fmt(p.totalProfit)} đ</p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '6px', background: p.isActive ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.15)', color: p.isActive ? '#4ade80' : '#f87171' }}>{p.isActive ? 'Active' : 'Off'}</span>
+                  <Edit3 size={14} color="#94a3b8" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Product Dialog */}
+      {showProductDialog && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: '16px' }} onClick={() => setShowProductDialog(false)}>
+          <div className="glass-card" style={{ padding: '20px', width: '100%', maxWidth: '400px', maxHeight: '90vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 style={{ fontWeight: 600, fontSize: '16px' }}>{editingProduct ? 'Sửa gói đầu tư' : 'Tạo gói đầu tư'}</h3>
+              <button onClick={() => setShowProductDialog(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8' }}><X size={20} /></button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <input className="input-field" placeholder="Tên gói" value={productForm.name} onChange={e => setProductForm({...productForm, name: e.target.value})} />
               <input className="input-field" placeholder="Mô tả" value={productForm.description} onChange={e => setProductForm({...productForm, description: e.target.value})} />
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                <input type="number" className="input-field" placeholder="Giá" value={productForm.price || ''} onChange={e => setProductForm({...productForm, price: Number(e.target.value)})} />
-                <input type="number" className="input-field" placeholder="ROI %" value={productForm.roiPercent || ''} onChange={e => setProductForm({...productForm, roiPercent: Number(e.target.value)})} />
-                <input type="number" className="input-field" placeholder="LN/ngày" value={productForm.dailyProfit || ''} onChange={e => setProductForm({...productForm, dailyProfit: Number(e.target.value)})} />
-                <input type="number" className="input-field" placeholder="Tổng LN" value={productForm.totalProfit || ''} onChange={e => setProductForm({...productForm, totalProfit: Number(e.target.value)})} />
-                <input type="number" className="input-field" placeholder="Số ngày" value={productForm.durationDays || ''} onChange={e => setProductForm({...productForm, durationDays: Number(e.target.value)})} />
-                <input type="number" className="input-field" placeholder="Hoàn tiền (h)" value={productForm.paymentDelayHours || ''} onChange={e => setProductForm({...productForm, paymentDelayHours: Number(e.target.value)})} />
+                <div><label style={{ fontSize: '11px', color: '#94a3b8' }}>Giá (đ)</label><input type="number" className="input-field" value={productForm.price || ''} onChange={e => setProductForm({...productForm, price: Number(e.target.value)})} /></div>
+                <div><label style={{ fontSize: '11px', color: '#94a3b8' }}>ROI %</label><input type="number" className="input-field" value={productForm.roiPercent || ''} onChange={e => setProductForm({...productForm, roiPercent: Number(e.target.value)})} /></div>
+                <div><label style={{ fontSize: '11px', color: '#94a3b8' }}>LN/ngày</label><input type="number" className="input-field" value={productForm.dailyProfit || ''} onChange={e => setProductForm({...productForm, dailyProfit: Number(e.target.value)})} /></div>
+                <div><label style={{ fontSize: '11px', color: '#94a3b8' }}>Tổng LN</label><input type="number" className="input-field" value={productForm.totalProfit || ''} onChange={e => setProductForm({...productForm, totalProfit: Number(e.target.value)})} /></div>
+                <div><label style={{ fontSize: '11px', color: '#94a3b8' }}>Số ngày</label><input type="number" className="input-field" value={productForm.durationDays || ''} onChange={e => setProductForm({...productForm, durationDays: Number(e.target.value)})} /></div>
+                <div><label style={{ fontSize: '11px', color: '#94a3b8' }}>Hoàn tiền (h)</label><input type="number" className="input-field" value={productForm.paymentDelayHours || ''} onChange={e => setProductForm({...productForm, paymentDelayHours: Number(e.target.value)})} /></div>
               </div>
-              <button onClick={createProduct} className="gradient-btn">Tạo gói</button>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                {editingProduct ? (
+                  <>
+                    <button onClick={updateProduct} className="gradient-btn" style={{ flex: 1 }}>Lưu thay đổi</button>
+                    <button onClick={async () => { try { await adminAPI.deleteProduct(editingProduct.id); showMsg('Đã xóa!'); setShowProductDialog(false); loadData(); } catch(e:any) { showMsg(e.message); } }} style={{ padding: '12px 16px', background: 'rgba(239,68,68,0.15)', color: '#f87171', borderRadius: '12px', border: 'none', cursor: 'pointer', fontWeight: 600 }}><Trash2 size={16} /></button>
+                  </>
+                ) : (
+                  <button onClick={createProduct} className="gradient-btn" style={{ flex: 1 }}>Tạo gói</button>
+                )}
+              </div>
             </div>
           </div>
-          {Array.isArray(data) && data.map((p: any) => (
-            <div key={p.id} className="glass-card" style={{ padding: '12px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div>
-                  <p style={{ fontWeight: 500, fontSize: '14px' }}>{p.name}</p>
-                  <p style={{ fontSize: '12px', color: '#94a3b8' }}>{fmt(p.price)} đ | ROI {p.roiPercent}% | {p.durationDays} ngày</p>
-                </div>
-                <span style={{ fontSize: '12px', color: p.isActive ? '#4ade80' : '#f87171' }}>{p.isActive ? 'Active' : 'Inactive'}</span>
-              </div>
-            </div>
-          ))}
         </div>
       )}
 
@@ -487,6 +562,34 @@ export default function AdminPage() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Config */}
+      {tab === 'config' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div className="glass-card" style={{ padding: '16px' }}>
+            <h3 style={{ fontWeight: 600, fontSize: '14px', marginBottom: '12px' }}>🎨 Màu sắc giao diện</h3>
+            <p style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '12px' }}>Chọn theme cho giao diện người dùng</p>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button onClick={() => switchTheme('cyan')} style={{
+                flex: 1, padding: '16px', borderRadius: '12px', border: theme === 'cyan' ? '2px solid #00f5d4' : '2px solid rgba(30,41,59,0.5)',
+                background: theme === 'cyan' ? 'rgba(0,245,212,0.1)' : 'rgba(30,41,59,0.3)', cursor: 'pointer', textAlign: 'center',
+              }}>
+                <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg, #00f5d4, #00bbf9)', margin: '0 auto 8px' }} />
+                <p style={{ color: theme === 'cyan' ? '#00f5d4' : '#94a3b8', fontSize: '13px', fontWeight: 600 }}>Xanh Cyan</p>
+                {theme === 'cyan' && <p style={{ fontSize: '10px', color: '#4ade80', marginTop: '4px' }}>✓ Đang dùng</p>}
+              </button>
+              <button onClick={() => switchTheme('red')} style={{
+                flex: 1, padding: '16px', borderRadius: '12px', border: theme === 'red' ? '2px solid #ff4757' : '2px solid rgba(30,41,59,0.5)',
+                background: theme === 'red' ? 'rgba(255,71,87,0.1)' : 'rgba(30,41,59,0.3)', cursor: 'pointer', textAlign: 'center',
+              }}>
+                <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg, #ff4757, #ff6b81)', margin: '0 auto 8px' }} />
+                <p style={{ color: theme === 'red' ? '#ff4757' : '#94a3b8', fontSize: '13px', fontWeight: 600 }}>Đỏ</p>
+                {theme === 'red' && <p style={{ fontSize: '10px', color: '#4ade80', marginTop: '4px' }}>✓ Đang dùng</p>}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

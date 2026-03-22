@@ -129,9 +129,8 @@ export class WalletService {
     if (user.balance < amount) throw new BadRequestException('Số dư không đủ');
 
     const hasInvestment = await this.prisma.userInvestment.findFirst({ where: { userId } });
-    const hasTask = await this.prisma.taskCompletion.findFirst({ where: { userId, status: 'approved' } });
-    if (!hasInvestment && !hasTask) {
-      throw new BadRequestException('Bạn cần đầu tư hoặc hoàn thành nhiệm vụ để rút tiền');
+    if (!hasInvestment) {
+      throw new BadRequestException('Bạn cần đầu tư ít nhất 1 gói để rút tiền');
     }
 
     if (!user.bankName || !user.bankAccountNumber || !user.bankAccountHolder) {
