@@ -1,0 +1,73 @@
+/* Admin Desktop Responsive Styles */
+
+/* Admin form constraints */
+.admin-form {
+  max-width: 480px;
+}
+
+.admin-form-wide {
+  max-width: 640px;
+}
+
+/* Admin grid for cards on desktop */
+@media (min-width: 768px) {
+  .admin-cards-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .admin-cards-grid-3 {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .admin-stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  .admin-btn-compact {
+    max-width: 320px !important;
+  }
+
+  .admin-input-compact {
+    max-width: 400px !important;
+  }
+
+  .admin-form-inline {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+    align-items: flex-end !important;
+  }
+
+  .admin-form-inline > * {
+    flex: 1 1 180px;
+    min-width: 160px;
+    max-width: 280px;
+  }
+
+  .admin-form-inline .admin-btn-submit {
+    flex: 0 0 auto;
+    max-width: 200px;
+  }
+
+  /* Tab bar horizontal scroll on desktop */
+  .admin-tabs {
+    flex-wrap: nowrap !important;
+    gap: 4px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-cards-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  .admin-cards-grid-3 {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}

@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { adminAPI } from '@/lib/api';
 import { Settings, BarChart3, Users, Gem, ArrowDownCircle, ArrowUpCircle, Plus, Check, X, ArrowLeft, AlertTriangle, Copy, Edit3, Save, LogOut, Landmark, Trash2, TrendingUp, Bell, RefreshCw } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
+import './admin.css';
 
 type Tab = 'stats' | 'users' | 'products' | 'investments' | 'deposits' | 'withdrawals' | 'banks';
 const validTabs: Tab[] = ['stats', 'users', 'products', 'investments', 'deposits', 'withdrawals', 'banks'];
@@ -255,7 +256,7 @@ export default function AdminPage() {
       {/* Stats */}
       {tab === 'stats' && data && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          <div className="admin-stats-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             {[
               { label: 'Tổng users', value: data.totalUsers, color: '#00f5d4' },
               { label: 'Nghi ngờ', value: data.suspiciousUsers, color: '#f87171' },
@@ -285,7 +286,7 @@ export default function AdminPage() {
 
       {/* Users */}
       {tab === 'users' && data?.users && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div className="admin-cards-grid" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {data.users.map((u: any) => (
             <div key={u.id} className="glass-card" style={{ padding: '12px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -324,9 +325,10 @@ export default function AdminPage() {
       {/* Products */}
       {tab === 'products' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <button onClick={openCreateProduct} className="gradient-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+          <button onClick={openCreateProduct} className="gradient-btn admin-btn-compact" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
             <Plus size={16} /> Tạo gói đầu tư mới
           </button>
+          <div className="admin-cards-grid">
           {Array.isArray(data) && data.map((p: any) => (
             <div key={p.id} className="glass-card" style={{ padding: '12px', cursor: 'pointer' }} onClick={() => openEditProduct(p)}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -342,6 +344,7 @@ export default function AdminPage() {
               </div>
             </div>
           ))}
+          </div>
         </div>
       )}
 
@@ -382,6 +385,7 @@ export default function AdminPage() {
       {/* User Investments */}
       {tab === 'investments' && Array.isArray(data) && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div className="admin-cards-grid">
           <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '4px' }}>Tổng: {data.length} lượt đầu tư</p>
           {data.length === 0 && <p style={{ textAlign: 'center', color: '#64748b', padding: '32px' }}>Chưa có đầu tư nào</p>}
           {data.map((inv: any) => (
@@ -404,6 +408,7 @@ export default function AdminPage() {
               </div>
             </div>
           ))}
+          </div>
         </div>
       )}
 
@@ -469,12 +474,12 @@ export default function AdminPage() {
       {/* Banks */}
       {tab === 'banks' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div className="glass-card" style={{ padding: '16px' }}>
+          <div className="glass-card admin-form-wide" style={{ padding: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
               <Plus size={16} color="#00f5d4" />
               <h3 style={{ fontWeight: 600, fontSize: '14px' }}>Thêm tài khoản ngân hàng</h3>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div className="admin-form-inline" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <select className="input-field" value={bankForm.bankCode} onChange={e => {
                 const opt = e.target.options[e.target.selectedIndex];
                 setBankForm({...bankForm, bankCode: e.target.value, bankName: opt.dataset.name || e.target.value });
@@ -493,7 +498,7 @@ export default function AdminPage() {
                   setBankForm({ bankCode: '', bankName: '', accountNumber: '', accountHolder: '' });
                   loadData();
                 } catch(err: any) { showMsg(err.message); }
-              }} className="gradient-btn">Thêm tài khoản</button>
+              }} className="gradient-btn admin-btn-submit">Thêm tài khoản</button>
             </div>
           </div>
           {Array.isArray(data) && data.map((b: any) => (
