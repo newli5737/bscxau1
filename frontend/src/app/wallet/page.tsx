@@ -105,7 +105,7 @@ export default function WalletPage() {
   return (
     <div style={{ padding: '24px 16px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }} className="animate-in">
-        <Wallet size={22} color="#00f5d4" />
+        <Wallet size={22} color="#ff4757" />
         <h1 style={{ fontSize: '20px', fontWeight: 700 }}>Ví của tôi</h1>
       </div>
 
@@ -127,10 +127,10 @@ export default function WalletPage() {
 
       {/* QR Deposit Order Modal */}
       {depositOrder && (
-        <div className="glass-card animate-in" style={{ padding: '20px', marginBottom: '20px', border: '1px solid rgba(0,245,212,0.3)' }}>
+        <div className="glass-card animate-in" style={{ padding: '20px', marginBottom: '20px', border: '1px solid rgba(255,71,87,0.3)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <QrCode size={18} color="#00f5d4" />
+              <QrCode size={18} color="#ff4757" />
               <h3 style={{ fontWeight: 600, fontSize: '15px' }}>Quét QR để chuyển khoản</h3>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 10px', borderRadius: '20px', background: countdown === 'Hết hạn' ? 'rgba(239,68,68,0.15)' : 'rgba(234,179,8,0.15)', color: countdown === 'Hết hạn' ? '#f87171' : '#facc15' }}>
@@ -141,7 +141,7 @@ export default function WalletPage() {
 
           {/* QR Image */}
           <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-            <img src={depositOrder.qrUrl} alt="QR Code" style={{ maxWidth: '100%', width: '280px', borderRadius: '12px', border: '2px solid rgba(0,245,212,0.2)' }} />
+            <img src={depositOrder.qrUrl} alt="QR Code" style={{ maxWidth: '100%', width: '280px', borderRadius: '12px', border: '2px solid rgba(255,71,87,0.2)' }} />
           </div>
 
           {/* Bank Info */}
@@ -163,11 +163,11 @@ export default function WalletPage() {
           </div>
 
           {/* Transfer Content */}
-          <div style={{ background: 'linear-gradient(135deg, rgba(0,245,212,0.1), rgba(14,165,233,0.1))', borderRadius: '12px', padding: '16px', textAlign: 'center', border: '1px dashed rgba(0,245,212,0.3)' }}>
+          <div style={{ background: 'linear-gradient(135deg, rgba(255,71,87,0.1), rgba(14,165,233,0.1))', borderRadius: '12px', padding: '16px', textAlign: 'center', border: '1px dashed rgba(255,71,87,0.3)' }}>
             <p style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '6px' }}>Nội dung chuyển khoản (bắt buộc)</p>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
               <p className="neon-text" style={{ fontSize: '18px', fontWeight: 700, letterSpacing: '2px' }}>{depositOrder.transferContent}</p>
-              <button onClick={() => copyText(depositOrder.transferContent)} style={{ padding: '6px', background: 'rgba(0,245,212,0.15)', borderRadius: '8px', border: 'none', cursor: 'pointer', color: '#00f5d4' }}>
+              <button onClick={() => copyText(depositOrder.transferContent)} style={{ padding: '6px', background: 'rgba(255,71,87,0.15)', borderRadius: '8px', border: 'none', cursor: 'pointer', color: '#ff4757' }}>
                 <Copy size={16} />
               </button>
             </div>

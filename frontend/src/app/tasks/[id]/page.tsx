@@ -55,7 +55,7 @@ export default function TaskDetailPage() {
 
   return (
     <div style={{ padding: '24px 16px' }}>
-      <button onClick={() => router.push('/tasks')} style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#00f5d4', background: 'none', border: 'none', cursor: 'pointer', fontSize: '13px', marginBottom: '20px' }}>
+      <button onClick={() => router.push('/tasks')} style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ff4757', background: 'none', border: 'none', cursor: 'pointer', fontSize: '13px', marginBottom: '20px' }}>
         <ArrowLeft size={16} /> Quay lại
       </button>
 
@@ -79,7 +79,7 @@ export default function TaskDetailPage() {
         )}
 
         {/* Reward */}
-        <div style={{ background: 'linear-gradient(135deg, rgba(0,245,212,0.1), rgba(14,165,233,0.1))', borderRadius: '12px', padding: '16px', marginBottom: '24px', textAlign: 'center', border: '1px solid rgba(0,245,212,0.2)' }}>
+        <div style={{ background: 'linear-gradient(135deg, rgba(255,71,87,0.1), rgba(14,165,233,0.1))', borderRadius: '12px', padding: '16px', marginBottom: '24px', textAlign: 'center', border: '1px solid rgba(255,71,87,0.2)' }}>
           <p style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '4px' }}>Phần thưởng</p>
           <p className="neon-text" style={{ fontSize: '24px', fontWeight: 700 }}>+{task.reward.toLocaleString('vi-VN')} đ</p>
         </div>

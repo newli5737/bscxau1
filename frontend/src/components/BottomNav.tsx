@@ -23,9 +23,9 @@ export default function BottomNav() {
       transform: 'translateX(-50%)',
       width: '100%',
       maxWidth: '420px',
-      background: 'rgba(10, 14, 39, 0.95)',
+      background: 'rgba(10, 10, 10, 0.98)',
       backdropFilter: 'blur(20px)',
-      borderTop: '1px solid rgba(0, 245, 212, 0.2)',
+      borderTop: '1px solid rgba(255, 71, 87, 0.15)',
       zIndex: 50,
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', padding: '8px 0' }}>
@@ -44,7 +44,7 @@ export default function BottomNav() {
                 padding: '4px 8px',
                 borderRadius: '8px',
                 transition: 'all 0.2s',
-                color: active ? '#00f5d4' : '#94a3b8',
+                color: active ? '#ff4757' : '#94a3b8',
                 transform: active ? 'scale(1.1)' : 'scale(1)',
                 textDecoration: 'none',
               }}
@@ -58,3 +58,4 @@ export default function BottomNav() {
     </nav>
   );
 }
+

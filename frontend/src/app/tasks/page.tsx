@@ -61,7 +61,7 @@ export default function TasksPage() {
   return (
     <div style={{ padding: '24px 16px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }} className="animate-in">
-        <ClipboardList size={22} color="#00f5d4" />
+        <ClipboardList size={22} color="#ff4757" />
         <h1 style={{ fontSize: '20px', fontWeight: 700 }}>Nhiệm vụ</h1>
       </div>
 

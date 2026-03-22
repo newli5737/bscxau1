@@ -53,7 +53,7 @@ export default function LoginPage() {
             <div>
               <label style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '6px', display: 'block' }}>Số điện thoại</label>
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <span style={{ background: 'rgba(30,41,59,0.8)', border: '1px solid rgba(0,245,212,0.15)', borderRadius: '10px', padding: '10px 12px', color: '#00f5d4', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap' }}>+84</span>
+                <span style={{ background: 'rgba(30,41,59,0.8)', border: '1px solid rgba(255,71,87,0.15)', borderRadius: '10px', padding: '10px 12px', color: '#ff4757', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap' }}>+84</span>
                 <input type="tel" className="input-field" placeholder="Nhập 9 số" value={phone} onChange={handlePhoneChange} required style={{ flex: 1 }} />
               </div>
             </div>
@@ -73,7 +73,7 @@ export default function LoginPage() {
 
           <div style={{ textAlign: 'center', fontSize: '13px', color: '#94a3b8', marginTop: '16px' }}>
             Chưa có tài khoản?{' '}
-            <Link href="/register" style={{ color: '#00f5d4', textDecoration: 'none' }}>Đăng ký ngay</Link>
+            <Link href="/register" style={{ color: '#ff4757', textDecoration: 'none' }}>Đăng ký ngay</Link>
           </div>
         </div>
       </div>

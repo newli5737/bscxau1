@@ -31,7 +31,7 @@ export default function TeamPage() {
   return (
     <div style={{ padding: '24px 16px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }} className="animate-in">
-        <Users size={22} color="#00f5d4" />
+        <Users size={22} color="#ff4757" />
         <h1 style={{ fontSize: '20px', fontWeight: 700 }}>Nhóm của tôi</h1>
       </div>
 
@@ -100,7 +100,7 @@ export default function TeamPage() {
       {/* Referral Link */}
       <div className="glass-card animate-in" style={{ padding: '16px', marginBottom: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          <UserPlus size={16} color="#00f5d4" />
+          <UserPlus size={16} color="#ff4757" />
           <p style={{ fontSize: '13px', color: '#94a3b8' }}>Link mời bạn bè</p>
         </div>
         <div style={{ background: 'rgba(30,41,59,0.6)', borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -109,7 +109,7 @@ export default function TeamPage() {
           </p>
           <button
             onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/register?ref=${user.referralCode}`); alert('Đã sao chép!'); }}
-            style={{ padding: '6px 12px', background: 'rgba(0,245,212,0.15)', borderRadius: '8px', color: '#00f5d4', fontSize: '12px', fontWeight: 500, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            style={{ padding: '6px 12px', background: 'rgba(255,71,87,0.15)', borderRadius: '8px', color: '#ff4757', fontSize: '12px', fontWeight: 500, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <Copy size={14} /> Sao chép
           </button>
         </div>

@@ -78,7 +78,7 @@ function RegisterForm() {
             <div>
               <label style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '6px', display: 'block' }}>Số điện thoại</label>
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <span style={{ background: 'rgba(30,41,59,0.8)', border: '1px solid rgba(0,245,212,0.15)', borderRadius: '10px', padding: '10px 12px', color: '#00f5d4', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap' }}>+84</span>
+                <span style={{ background: 'rgba(30,41,59,0.8)', border: '1px solid rgba(255,71,87,0.15)', borderRadius: '10px', padding: '10px 12px', color: '#ff4757', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap' }}>+84</span>
                 <input type="tel" className="input-field" placeholder="Nhập 9 số" value={form.phone} onChange={handlePhoneChange} required style={{ flex: 1 }} />
               </div>
             </div>
@@ -100,11 +100,11 @@ function RegisterForm() {
               <label style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '8px', display: 'block' }}>Mã xác nhận</label>
               <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {captcha.image ? (
-                  <img src={captcha.image} alt="captcha" style={{ height: '50px', borderRadius: '8px', border: '1px solid rgba(0,245,212,0.2)' }} />
+                  <img src={captcha.image} alt="captcha" style={{ height: '50px', borderRadius: '8px', border: '1px solid rgba(255,71,87,0.2)' }} />
                 ) : (
                   <div style={{ height: '50px', width: '150px', borderRadius: '8px', background: 'rgba(15,23,42,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: '12px' }}>Đang tải...</div>
                 )}
-                <button type="button" onClick={loadCaptcha} style={{ padding: '10px', borderRadius: '8px', background: 'rgba(30,41,59,0.8)', border: '1px solid rgba(0,245,212,0.2)', cursor: 'pointer', color: '#00f5d4', display: 'flex', alignItems: 'center' }}>
+                <button type="button" onClick={loadCaptcha} style={{ padding: '10px', borderRadius: '8px', background: 'rgba(30,41,59,0.8)', border: '1px solid rgba(255,71,87,0.2)', cursor: 'pointer', color: '#ff4757', display: 'flex', alignItems: 'center' }}>
                   <RefreshCw size={18} />
                 </button>
               </div>
@@ -122,7 +122,7 @@ function RegisterForm() {
 
           <div style={{ textAlign: 'center', fontSize: '13px', color: '#94a3b8', marginTop: '16px' }}>
             Đã có tài khoản?{' '}
-            <Link href="/login" style={{ color: '#00f5d4', textDecoration: 'none' }}>Đăng nhập</Link>
+            <Link href="/login" style={{ color: '#ff4757', textDecoration: 'none' }}>Đăng nhập</Link>
           </div>
         </div>
       </div>

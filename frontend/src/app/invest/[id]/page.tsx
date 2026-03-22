@@ -88,7 +88,7 @@ export default function InvestDetailPage() {
 
   return (
     <div style={{ padding: '24px 16px' }}>
-      <button onClick={() => router.push('/invest')} style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#00f5d4', background: 'none', border: 'none', cursor: 'pointer', fontSize: '13px', marginBottom: '20px' }}>
+      <button onClick={() => router.push('/invest')} style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ff4757', background: 'none', border: 'none', cursor: 'pointer', fontSize: '13px', marginBottom: '20px' }}>
         <ArrowLeft size={16} /> Quay lại
       </button>
 
@@ -129,7 +129,7 @@ export default function InvestDetailPage() {
                     <p style={{ fontSize: '13px', fontWeight: 500 }}>{r.value}</p>
                   </div>
                   {r.copy && (
-                    <button onClick={() => copyText(r.copyVal || r.value)} style={{ background: 'rgba(0,245,212,0.15)', border: 'none', color: '#00f5d4', padding: '4px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <button onClick={() => copyText(r.copyVal || r.value)} style={{ background: 'rgba(255,71,87,0.15)', border: 'none', color: '#ff4757', padding: '4px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <Copy size={12} /> Sao chép
                     </button>
                   )}
@@ -152,7 +152,7 @@ export default function InvestDetailPage() {
 
         {/* Logo */}
         <div style={{ background: 'rgba(30,41,59,0.5)', borderRadius: '16px', padding: '20px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ width: 40, height: 40, borderRadius: 10, background: 'linear-gradient(135deg, #00f5d4, #0ea5e9)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 40, height: 40, borderRadius: 10, background: 'linear-gradient(135deg, #ff4757, #0ea5e9)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <TrendingUp size={20} color="white" />
           </div>
           <div>

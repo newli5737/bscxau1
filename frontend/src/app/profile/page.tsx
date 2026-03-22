@@ -45,14 +45,14 @@ export default function ProfilePage() {
   return (
     <div style={{ padding: '24px 16px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }} className="animate-in">
-        <UserCircle size={22} color="#00f5d4" />
+        <UserCircle size={22} color="#ff4757" />
         <h1 style={{ fontSize: '20px', fontWeight: 700 }}>Cá nhân</h1>
       </div>
 
       {/* User Info */}
       <div className="glass-card animate-in" style={{ padding: '20px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' }}>
-          <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg, #00f5d4, #0ea5e9)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', fontWeight: 700 }}>
+          <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg, #ff4757, #0ea5e9)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', fontWeight: 700 }}>
             {user.username[0].toUpperCase()}
           </div>
           <div>
@@ -67,7 +67,7 @@ export default function ProfilePage() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
               <p className="neon-text" style={{ fontWeight: 700, flex: 1 }}>{user.referralCode}</p>
               <button onClick={() => { navigator.clipboard.writeText(user.referralCode); alert('Đã sao chép!'); }}
-                style={{ padding: '4px 10px', background: 'rgba(0,245,212,0.15)', borderRadius: '8px', color: '#00f5d4', fontSize: '11px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                style={{ padding: '4px 10px', background: 'rgba(255,71,87,0.15)', borderRadius: '8px', color: '#ff4757', fontSize: '11px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Copy size={12} /> Sao chép
               </button>
             </div>
@@ -85,10 +85,10 @@ export default function ProfilePage() {
       <div className="glass-card animate-in" style={{ padding: '20px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Landmark size={18} color="#00f5d4" />
+            <Landmark size={18} color="#ff4757" />
             <h3 style={{ fontWeight: 600, fontSize: '15px' }}>Thông tin ngân hàng</h3>
           </div>
-          <button onClick={() => setEditing(!editing)} style={{ color: '#00f5d4', fontSize: '13px', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <button onClick={() => setEditing(!editing)} style={{ color: '#ff4757', fontSize: '13px', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
             {editing ? <><X size={14} /> Hủy</> : <><Edit3 size={14} /> Sửa</>}
           </button>
         </div>

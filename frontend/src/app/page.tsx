@@ -63,7 +63,7 @@ export default function HomePage() {
           <p style={{ color: '#94a3b8', fontSize: '14px' }}>Xin chào,</p>
           <h1 style={{ fontSize: '20px', fontWeight: 700 }}>{user.username}</h1>
         </div>
-        <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg, #00f5d4, #0ea5e9)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 700 }}>
+        <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg, #ff4757, #c0392b)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 700 }}>
           {user.username[0].toUpperCase()}
         </div>
       </div>
@@ -90,7 +90,7 @@ export default function HomePage() {
             </div>
             <div style={{ position: 'absolute', bottom: '8px', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '6px' }}>
               {slides.map((_, i) => (
-                <div key={i} onClick={() => setHeroSlide(i)} style={{ width: heroSlide === i ? 16 : 6, height: 6, borderRadius: 3, background: heroSlide === i ? '#00f5d4' : 'rgba(255,255,255,0.4)', transition: 'all 0.3s', cursor: 'pointer' }} />
+                <div key={i} onClick={() => setHeroSlide(i)} style={{ width: heroSlide === i ? 16 : 6, height: 6, borderRadius: 3, background: heroSlide === i ? '#ff4757' : 'rgba(255,255,255,0.4)', transition: 'all 0.3s', cursor: 'pointer' }} />
               ))}
             </div>
           </div>
@@ -98,7 +98,7 @@ export default function HomePage() {
       })()}
 
       {/* Marquee - Fake Withdrawals */}
-      <div className="animate-in" style={{ marginBottom: '20px', overflow: 'hidden', borderRadius: '12px', background: 'rgba(30,41,59,0.5)', border: '1px solid rgba(0,245,212,0.1)', padding: '10px 0' }}>
+      <div className="animate-in" style={{ marginBottom: '20px', overflow: 'hidden', borderRadius: '12px', background: 'rgba(20,15,15,0.6)', border: '1px solid rgba(255,71,87,0.1)', padding: '10px 0' }}>
         <div style={{ display: 'flex', animation: 'marquee-scroll 10s linear infinite', whiteSpace: 'nowrap' }}>
           {[...fakeWithdrawals, ...fakeWithdrawals].map((item, i) => (
             <div key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginRight: '32px', flexShrink: 0 }}>
@@ -128,7 +128,7 @@ export default function HomePage() {
           </div>
           <div>
             <p style={{ color: '#94a3b8', fontSize: '12px' }}>Tổng thu nhập</p>
-            <p style={{ fontSize: '18px', fontWeight: 600, color: '#67e8f9' }}>{formatMoney(user.totalIncome)}</p>
+            <p style={{ fontSize: '18px', fontWeight: 600, color: '#ff6b81' }}>{formatMoney(user.totalIncome)}</p>
           </div>
         </div>
       </div>
@@ -136,9 +136,9 @@ export default function HomePage() {
       {/* Quick Actions */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '24px' }}>
         {[
-          { href: '/invest', icon: TrendingUp, label: 'Đầu tư', color: '#00f5d4' },
-          { href: '/team', icon: Users, label: 'Nhóm', color: '#00bbf9' },
-          { href: '/wallet', icon: ArrowDownToLine, label: 'Ví tiền', color: '#a78bfa' },
+          { href: '/invest', icon: TrendingUp, label: 'Đầu tư', color: '#ff4757' },
+          { href: '/team', icon: Users, label: 'Nhóm', color: '#ff6b81' },
+          { href: '/wallet', icon: ArrowDownToLine, label: 'Ví tiền', color: '#ffa502' },
         ].map((item) => {
           const Icon = item.icon;
           return (
@@ -157,17 +157,17 @@ export default function HomePage() {
         <div className="animate-in" style={{ marginBottom: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <TrendingUp size={16} color="#00f5d4" />
+              <TrendingUp size={16} color="#ff4757" />
               <h3 style={{ fontWeight: 600, fontSize: '15px' }}>Gói đầu tư nổi bật</h3>
             </div>
-            <Link href="/invest" style={{ color: '#00f5d4', fontSize: '12px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
+            <Link href="/invest" style={{ color: '#ff4757', fontSize: '12px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
               Xem tất cả <ChevronRight size={14} />
             </Link>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {products.map((p) => (
               <Link key={p.id} href={`/invest/${p.id}`} className="glass-card" style={{ padding: '12px', display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none', color: 'inherit', transition: 'transform 0.2s' }}>
-                <div style={{ width: 40, height: 40, borderRadius: 10, background: 'linear-gradient(135deg, #00f5d4, #0ea5e9)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 10, background: 'linear-gradient(135deg, #ff4757, #c0392b)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <TrendingUp size={18} color="white" />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -191,7 +191,7 @@ export default function HomePage() {
             <p style={{ fontSize: '14px', fontWeight: 500 }}>Hệ thống gói đầu tư AI</p>
             <p style={{ fontSize: '12px', color: '#94a3b8' }}>Tự động hóa dựa trên trí tuệ nhân tạo</p>
           </div>
-          <span style={{ color: '#00f5d4', fontSize: '14px' }}>Xem →</span>
+          <span style={{ color: '#ff4757', fontSize: '14px' }}>Xem →</span>
         </Link>
         <Link href="/team" className="glass-card animate-in" style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none', color: 'inherit' }}>
           <div style={{ width: 48, height: 48, borderRadius: 12, background: 'linear-gradient(135deg, #f97316, #ef4444)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -201,7 +201,7 @@ export default function HomePage() {
             <p style={{ fontSize: '14px', fontWeight: 500 }}>Mời bạn bè nhận thưởng</p>
             <p style={{ fontSize: '12px', color: '#94a3b8' }}>Hoa hồng 3 cấp, lên đến 32%</p>
           </div>
-          <span style={{ color: '#00f5d4', fontSize: '14px' }}>Xem →</span>
+          <span style={{ color: '#ff4757', fontSize: '14px' }}>Xem →</span>
         </Link>
       </div>
 

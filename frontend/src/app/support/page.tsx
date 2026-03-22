@@ -16,7 +16,7 @@ export default function SupportPage() {
   return (
     <div style={{ padding: '24px 16px' }}>
       <div className="animate-in" style={{ textAlign: 'center', marginBottom: '24px' }}>
-        <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'linear-gradient(135deg, #00f5d4, #0ea5e9)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+        <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'linear-gradient(135deg, #ff4757, #0ea5e9)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
           <Headphones size={28} color="white" />
         </div>
         <h1 style={{ fontSize: '20px', fontWeight: 700 }}>Trung tâm hỗ trợ</h1>
@@ -26,7 +26,7 @@ export default function SupportPage() {
       {/* Info cards */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
         {[
-          { icon: Clock, title: 'Hỗ trợ 24/7', desc: 'Đội ngũ CSKH hoạt động liên tục, sẵn sàng giải đáp mọi thắc mắc của bạn bất kể ngày đêm.', color: '#00f5d4' },
+          { icon: Clock, title: 'Hỗ trợ 24/7', desc: 'Đội ngũ CSKH hoạt động liên tục, sẵn sàng giải đáp mọi thắc mắc của bạn bất kể ngày đêm.', color: '#ff4757' },
           { icon: Shield, title: 'Bảo mật thông tin', desc: 'Mọi thông tin cá nhân và giao dịch của bạn được bảo mật tuyệt đối với hệ thống mã hóa tiên tiến.', color: '#a78bfa' },
           { icon: MessageCircle, title: 'Phản hồi nhanh chóng', desc: 'Cam kết phản hồi trong vòng 5 phút qua kênh Telegram chính thức.', color: '#facc15' },
         ].map((item, i) => {
@@ -56,7 +56,7 @@ export default function SupportPage() {
             { q: 'Mời bạn bè nhận thưởng thế nào?', a: 'Vào Cá nhân → sao chép mã giới thiệu. Bạn bè đăng ký bằng mã của bạn, bạn nhận hoa hồng 3 cấp.' },
           ].map((item, i) => (
             <div key={i} className="glass-card" style={{ padding: '14px' }}>
-              <p style={{ fontWeight: 600, fontSize: '13px', marginBottom: '6px', color: '#00f5d4' }}>❓ {item.q}</p>
+              <p style={{ fontWeight: 600, fontSize: '13px', marginBottom: '6px', color: '#ff4757' }}>❓ {item.q}</p>
               <p style={{ fontSize: '12px', color: '#cbd5e1', lineHeight: '1.5' }}>{item.a}</p>
             </div>
           ))}
