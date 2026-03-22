@@ -31,6 +31,8 @@ async function main() {
   }
 
   // Seed BSCXAU VIP investment products
+  // Delete investments first (FK constraint), then products
+  await prisma.userInvestment.deleteMany({});
   await prisma.investmentProduct.deleteMany({});
   const products = [
     { name: 'BSCXAU VIP 1', description: 'Gói đầu tư vàng BSCXAU – Tối ưu lợi nhuận bằng công nghệ AI', price: 100000, roiPercent: 30, dailyProfit: 30000, totalProfit: 2700000, durationDays: 90, paymentDelayHours: 24 },
