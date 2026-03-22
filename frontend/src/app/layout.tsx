@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from 'next/font/google';
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const inter = Inter({ subsets: ['latin', 'vietnamese'] });
 
@@ -22,12 +23,15 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body className={inter.className}>
-        <AuthProvider>
-          <div className="mobile-container">
-            {children}
-          </div>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <div className="mobile-container">
+              {children}
+            </div>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
 }
+
