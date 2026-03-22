@@ -6,14 +6,8 @@ import { adminAPI } from '@/lib/api';
 import { Settings, BarChart3, Users, Gem, ArrowDownCircle, ArrowUpCircle, Plus, Check, X, ArrowLeft, AlertTriangle, Copy, Edit3, Save, LogOut, Landmark, Trash2, TrendingUp, Bell, RefreshCw } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
 
-type Tab = 'stats' | 'users' | 'products' | 'investments' | 'deposits' | 'withdrawals' | 'banks' | 'config';
-const validTabs: Tab[] = ['stats', 'users', 'products', 'investments', 'deposits', 'withdrawals', 'banks', 'config'];
-
-const THEMES = {
-  cyan: { '--neon-cyan': '#00f5d4', '--neon-blue': '#00bbf9', '--dark-bg': '#0a0e27', gradient: 'linear-gradient(135deg, #00f5d4 0%, #00bbf9 100%)' },
-  red: { '--neon-cyan': '#ff4757', '--neon-blue': '#ff6b81', '--dark-bg': '#1a0a0e', gradient: 'linear-gradient(135deg, #ff4757 0%, #ff6b81 100%)' },
-} as const;
-type ThemeKey = keyof typeof THEMES;
+type Tab = 'stats' | 'users' | 'products' | 'investments' | 'deposits' | 'withdrawals' | 'banks';
+const validTabs: Tab[] = ['stats', 'users', 'products', 'investments', 'deposits', 'withdrawals', 'banks'];
 
 function getInitialTab(): Tab {
   if (typeof window === 'undefined') return 'stats';
@@ -45,27 +39,6 @@ export default function AdminPage() {
   });
   const [showProductDialog, setShowProductDialog] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
-  const [theme, setTheme] = useState<ThemeKey>('cyan');
-
-  // Load theme from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('bscxau-theme') as ThemeKey;
-    if (saved && THEMES[saved]) { setTheme(saved); applyTheme(saved); }
-  }, []);
-
-  const applyTheme = (t: ThemeKey) => {
-    const vars = THEMES[t];
-    document.documentElement.style.setProperty('--neon-cyan', vars['--neon-cyan']);
-    document.documentElement.style.setProperty('--neon-blue', vars['--neon-blue']);
-    document.documentElement.style.setProperty('--dark-bg', vars['--dark-bg']);
-  };
-
-  const switchTheme = (t: ThemeKey) => {
-    setTheme(t);
-    localStorage.setItem('bscxau-theme', t);
-    applyTheme(t);
-    showMsg(`Đã chuyển sang theme ${t === 'cyan' ? 'Xanh Cyan' : 'Đỏ'}`);
-  };
 
   const [editingRefCode, setEditingRefCode] = useState<{ id: number; code: string } | null>(null);
   const [bankForm, setBankForm] = useState({ bankCode: '', bankName: '', accountNumber: '', accountHolder: '' });
@@ -212,11 +185,10 @@ export default function AdminPage() {
     { key: 'deposits', label: 'Nạp', icon: ArrowDownCircle },
     { key: 'withdrawals', label: 'Rút', icon: ArrowUpCircle },
     { key: 'banks', label: 'NH', icon: Landmark },
-    { key: 'config', label: 'Cấu hình', icon: Settings },
   ];
 
   return (
-    <div style={{ padding: '24px 16px 32px' }}>
+    <div style={{ padding: '24px 16px 32px', maxWidth: '1200px', margin: '0 auto' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Settings size={22} color="#00f5d4" />
@@ -562,34 +534,6 @@ export default function AdminPage() {
               </div>
             </div>
           ))}
-        </div>
-      )}
-
-      {/* Config */}
-      {tab === 'config' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div className="glass-card" style={{ padding: '16px' }}>
-            <h3 style={{ fontWeight: 600, fontSize: '14px', marginBottom: '12px' }}>🎨 Màu sắc giao diện</h3>
-            <p style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '12px' }}>Chọn theme cho giao diện người dùng</p>
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <button onClick={() => switchTheme('cyan')} style={{
-                flex: 1, padding: '16px', borderRadius: '12px', border: theme === 'cyan' ? '2px solid #00f5d4' : '2px solid rgba(30,41,59,0.5)',
-                background: theme === 'cyan' ? 'rgba(0,245,212,0.1)' : 'rgba(30,41,59,0.3)', cursor: 'pointer', textAlign: 'center',
-              }}>
-                <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg, #00f5d4, #00bbf9)', margin: '0 auto 8px' }} />
-                <p style={{ color: theme === 'cyan' ? '#00f5d4' : '#94a3b8', fontSize: '13px', fontWeight: 600 }}>Xanh Cyan</p>
-                {theme === 'cyan' && <p style={{ fontSize: '10px', color: '#4ade80', marginTop: '4px' }}>✓ Đang dùng</p>}
-              </button>
-              <button onClick={() => switchTheme('red')} style={{
-                flex: 1, padding: '16px', borderRadius: '12px', border: theme === 'red' ? '2px solid #ff4757' : '2px solid rgba(30,41,59,0.5)',
-                background: theme === 'red' ? 'rgba(255,71,87,0.1)' : 'rgba(30,41,59,0.3)', cursor: 'pointer', textAlign: 'center',
-              }}>
-                <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg, #ff4757, #ff6b81)', margin: '0 auto 8px' }} />
-                <p style={{ color: theme === 'red' ? '#ff4757' : '#94a3b8', fontSize: '13px', fontWeight: 600 }}>Đỏ</p>
-                {theme === 'red' && <p style={{ fontSize: '10px', color: '#4ade80', marginTop: '4px' }}>✓ Đang dùng</p>}
-              </button>
-            </div>
-          </div>
         </div>
       )}
     </div>

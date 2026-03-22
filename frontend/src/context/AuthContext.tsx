@@ -47,6 +47,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  // Auto-refresh balance when page gets focus or every 15s
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const refreshOnFocus = () => {
+      authAPI.getProfile().then(setUser).catch(() => {});
+    };
+
+    window.addEventListener('focus', refreshOnFocus);
+    const interval = setInterval(refreshOnFocus, 15000);
+
+    return () => {
+      window.removeEventListener('focus', refreshOnFocus);
+      clearInterval(interval);
+    };
+  }, []);
+
   const login = async (token: string, _userData: any) => {
     localStorage.setItem('token', token);
     try {
