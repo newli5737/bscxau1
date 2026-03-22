@@ -138,6 +138,7 @@ model WithdrawRequest {
   bankAccountNumber String   @map("bank_account_number")
   bankAccountHolder String   @map("bank_account_holder")
   status            String   @default("pending")
+  adminNote         String?  @map("admin_note")
   createdAt         DateTime @default(now()) @map("created_at")
 
   user              User     @relation(fields: [userId], references: [id])
@@ -175,6 +176,7 @@ model DepositOrder {
   transferContent   String           @unique @map("transfer_content")
   expiresAt         DateTime         @map("expires_at")
   status            String           @default("pending")
+  adminNote         String?          @map("admin_note")
   productId         Int?             @map("product_id")
   createdAt         DateTime         @default(now()) @map("created_at")
 

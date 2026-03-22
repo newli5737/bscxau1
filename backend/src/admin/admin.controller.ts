@@ -84,8 +84,8 @@ export class AdminController {
   }
 
   @Patch('deposits/:id/reject')
-  rejectDeposit(@Param('id', ParseIntPipe) id: number) {
-    return this.adminService.rejectDeposit(id);
+  rejectDeposit(@Param('id', ParseIntPipe) id: number, @Body('note') note?: string) {
+    return this.adminService.rejectDeposit(id, note);
   }
 
   @Get('withdrawals/pending')
@@ -99,8 +99,8 @@ export class AdminController {
   }
 
   @Patch('withdrawals/:id/reject')
-  rejectWithdrawal(@Param('id', ParseIntPipe) id: number) {
-    return this.adminService.rejectWithdrawal(id);
+  rejectWithdrawal(@Param('id', ParseIntPipe) id: number, @Body('note') note?: string) {
+    return this.adminService.rejectWithdrawal(id, note);
   }
 
   @Get('stats')

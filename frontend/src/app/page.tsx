@@ -27,7 +27,7 @@ function generateFakeWithdrawals() {
 }
 
 export default function HomePage() {
-  const { user, loading } = useAuth();
+  const { user, loading, refreshProfile } = useAuth();
   const router = useRouter();
   const [products, setProducts] = useState<any[]>([]);
   const [heroSlide, setHeroSlide] = useState(0);
@@ -39,9 +39,10 @@ export default function HomePage() {
 
   useEffect(() => {
     if (user) {
+      refreshProfile();
       investmentAPI.getProducts().then(p => setProducts(p.slice(0, 5))).catch(() => {});
     }
-  }, [user]);
+  }, [user?.id]);
 
   // Hero auto-rotate
   useEffect(() => {

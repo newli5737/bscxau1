@@ -177,8 +177,8 @@ export class AdminService {
     }
   }
 
-  async rejectDeposit(id: number) {
-    return this.prisma.depositOrder.update({ where: { id }, data: { status: 'rejected' } });
+  async rejectDeposit(id: number, note: string = 'Chưa đủ điều kiện') {
+    return this.prisma.depositOrder.update({ where: { id }, data: { status: 'rejected', adminNote: note } });
   }
 
   // ===== WITHDRAWALS =====
@@ -210,8 +210,8 @@ export class AdminService {
     return { message: 'Đã duyệt rút tiền' };
   }
 
-  async rejectWithdrawal(id: number) {
-    return this.prisma.withdrawRequest.update({ where: { id }, data: { status: 'rejected' } });
+  async rejectWithdrawal(id: number, note: string = 'Chưa đủ điều kiện') {
+    return this.prisma.withdrawRequest.update({ where: { id }, data: { status: 'rejected', adminNote: note } });
   }
 
   // ===== STATS =====

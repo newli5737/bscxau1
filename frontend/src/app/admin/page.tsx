@@ -121,9 +121,11 @@ export default function AdminPage() {
   };
 
   const handleReject = async (type: string, id: number) => {
+    const note = prompt('Lý do từ chối:', 'Chưa đủ điều kiện');
+    if (note === null) return; // User cancelled
     try {
-      if (type === 'deposit') await adminAPI.rejectDeposit(id);
-      else if (type === 'withdrawal') await adminAPI.rejectWithdrawal(id);
+      if (type === 'deposit') await adminAPI.rejectDeposit(id, note || 'Chưa đủ điều kiện');
+      else if (type === 'withdrawal') await adminAPI.rejectWithdrawal(id, note || 'Chưa đủ điều kiện');
 
       showMsg('Đã từ chối!');
       loadData();
