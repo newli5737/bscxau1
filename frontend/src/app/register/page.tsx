@@ -1,14 +1,17 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { authAPI } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { RefreshCw } from 'lucide-react';
+import { Suspense } from 'react';
 
-export default function RegisterPage() {
+function RegisterForm() {
+  const searchParams = useSearchParams();
+  const refCode = searchParams.get('ref') || '';
   const [form, setForm] = useState({
-    phone: '', password: '', confirmPassword: '', referralCode: '', captchaAnswer: '',
+    phone: '', password: '', confirmPassword: '', referralCode: refCode, captchaAnswer: '',
   });
   const [captcha, setCaptcha] = useState({ id: '', image: '' });
   const [error, setError] = useState('');
@@ -91,7 +94,7 @@ export default function RegisterPage() {
               <label style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '6px', display: 'block' }}>
                 Mã giới thiệu <span style={{ color: '#f87171' }}>*</span>
               </label>
-              <input type="text" className="input-field" placeholder="Nhập mã giới thiệu" value={form.referralCode} onChange={e => setForm({ ...form, referralCode: e.target.value })} required />
+              <input type="text" className="input-field" placeholder="Nhập mã giới thiệu" value={form.referralCode} onChange={e => setForm({ ...form, referralCode: e.target.value })} required readOnly={!!refCode} style={refCode ? { opacity: 0.7, cursor: 'not-allowed' } : undefined} />
             </div>
             <div>
               <label style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '8px', display: 'block' }}>Mã xác nhận</label>
@@ -124,5 +127,13 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense>
+      <RegisterForm />
+    </Suspense>
   );
 }
