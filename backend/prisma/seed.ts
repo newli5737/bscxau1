@@ -11,7 +11,7 @@ async function main() {
   if (existing) {
     console.log('⚠️  Admin user already exists, skipping...');
   } else {
-    const passwordHash = await bcrypt.hash('admin123', 10);
+    const passwordHash = await bcrypt.hash('Bscxau@2026', 10);
     const admin = await prisma.user.create({
       data: {
         username: 'admin',
@@ -21,28 +21,28 @@ async function main() {
         registrationIp: '127.0.0.1',
       },
     });
-    console.log(`✅ Admin user created (id: ${admin.id}, username: admin, password: admin123)`);
+    console.log(`✅ Admin user created (id: ${admin.id}, username: admin, password: Bscxau@2026)`);
   }
 
-  // Seed Palantir AI VIP investment products
+  // Seed BSCXAU VIP investment products
   // Delete existing products and re-create
   await prisma.investmentProduct.deleteMany({});
   const products = [
-    { name: 'Palantir AI VIP 1', description: 'Tự động hóa dựa trên trí tuệ nhân tạo cho mọi quyết định', price: 60000, roiPercent: 31, dailyProfit: 18600, totalProfit: 1674000, durationDays: 90, paymentDelayHours: 24 },
-    { name: 'Palantir AI VIP 2', description: 'Tự động hóa dựa trên trí tuệ nhân tạo cho mọi quyết định', price: 120000, roiPercent: 32, dailyProfit: 38400, totalProfit: 3456000, durationDays: 90, paymentDelayHours: 24 },
-    { name: 'Palantir AI VIP 3', description: 'Tự động hóa dựa trên trí tuệ nhân tạo cho mọi quyết định', price: 200000, roiPercent: 33, dailyProfit: 66000, totalProfit: 5940000, durationDays: 90, paymentDelayHours: 24 },
-    { name: 'Palantir AI VIP 4', description: 'Tự động hóa dựa trên trí tuệ nhân tạo cho mọi quyết định', price: 400000, roiPercent: 35, dailyProfit: 140000, totalProfit: 12600000, durationDays: 90, paymentDelayHours: 24 },
-    { name: 'Palantir AI VIP 5', description: 'Tự động hóa dựa trên trí tuệ nhân tạo cho mọi quyết định', price: 600000, roiPercent: 37, dailyProfit: 222000, totalProfit: 19980000, durationDays: 90, paymentDelayHours: 24 },
-    { name: 'Palantir AI VIP 6', description: 'Tự động hóa dựa trên trí tuệ nhân tạo cho mọi quyết định', price: 1000000, roiPercent: 39, dailyProfit: 390000, totalProfit: 35100000, durationDays: 90, paymentDelayHours: 24 },
-    { name: 'Palantir AI VIP 7', description: 'Tự động hóa dựa trên trí tuệ nhân tạo cho mọi quyết định', price: 2000000, roiPercent: 42, dailyProfit: 840000, totalProfit: 75600000, durationDays: 90, paymentDelayHours: 24 },
-    { name: 'Palantir AI VIP 8', description: 'Tự động hóa dựa trên trí tuệ nhân tạo cho mọi quyết định', price: 3000000, roiPercent: 45, dailyProfit: 1350000, totalProfit: 121500000, durationDays: 90, paymentDelayHours: 24 },
-    { name: 'Palantir AI VIP 9', description: 'Tự động hóa dựa trên trí tuệ nhân tạo cho mọi quyết định', price: 5000000, roiPercent: 48, dailyProfit: 2400000, totalProfit: 216000000, durationDays: 90, paymentDelayHours: 24 },
-    { name: 'Palantir AI VIP 10', description: 'Tự động hóa dựa trên trí tuệ nhân tạo cho mọi quyết định', price: 10000000, roiPercent: 50, dailyProfit: 5000000, totalProfit: 450000000, durationDays: 90, paymentDelayHours: 24 },
+    { name: 'BSCXAU VIP 1', description: 'Gói đầu tư vàng BSCXAU – Tối ưu lợi nhuận bằng công nghệ AI', price: 60000, roiPercent: 31, dailyProfit: 18600, totalProfit: 1674000, durationDays: 90, paymentDelayHours: 24 },
+    { name: 'BSCXAU VIP 2', description: 'Gói đầu tư vàng BSCXAU – Tối ưu lợi nhuận bằng công nghệ AI', price: 120000, roiPercent: 32, dailyProfit: 38400, totalProfit: 3456000, durationDays: 90, paymentDelayHours: 24 },
+    { name: 'BSCXAU VIP 3', description: 'Gói đầu tư vàng BSCXAU – Tối ưu lợi nhuận bằng công nghệ AI', price: 200000, roiPercent: 33, dailyProfit: 66000, totalProfit: 5940000, durationDays: 90, paymentDelayHours: 24 },
+    { name: 'BSCXAU VIP 4', description: 'Gói đầu tư vàng BSCXAU – Tối ưu lợi nhuận bằng công nghệ AI', price: 400000, roiPercent: 35, dailyProfit: 140000, totalProfit: 12600000, durationDays: 90, paymentDelayHours: 24 },
+    { name: 'BSCXAU VIP 5', description: 'Gói đầu tư vàng BSCXAU – Tối ưu lợi nhuận bằng công nghệ AI', price: 600000, roiPercent: 37, dailyProfit: 222000, totalProfit: 19980000, durationDays: 90, paymentDelayHours: 24 },
+    { name: 'BSCXAU VIP 6', description: 'Gói đầu tư vàng BSCXAU – Tối ưu lợi nhuận bằng công nghệ AI', price: 1000000, roiPercent: 39, dailyProfit: 390000, totalProfit: 35100000, durationDays: 90, paymentDelayHours: 24 },
+    { name: 'BSCXAU VIP 7', description: 'Gói đầu tư vàng BSCXAU – Tối ưu lợi nhuận bằng công nghệ AI', price: 2000000, roiPercent: 42, dailyProfit: 840000, totalProfit: 75600000, durationDays: 90, paymentDelayHours: 24 },
+    { name: 'BSCXAU VIP 8', description: 'Gói đầu tư vàng BSCXAU – Tối ưu lợi nhuận bằng công nghệ AI', price: 3000000, roiPercent: 45, dailyProfit: 1350000, totalProfit: 121500000, durationDays: 90, paymentDelayHours: 24 },
+    { name: 'BSCXAU VIP 9', description: 'Gói đầu tư vàng BSCXAU – Tối ưu lợi nhuận bằng công nghệ AI', price: 5000000, roiPercent: 48, dailyProfit: 2400000, totalProfit: 216000000, durationDays: 90, paymentDelayHours: 24 },
+    { name: 'BSCXAU VIP 10', description: 'Gói đầu tư vàng BSCXAU – Tối ưu lợi nhuận bằng công nghệ AI', price: 10000000, roiPercent: 50, dailyProfit: 5000000, totalProfit: 450000000, durationDays: 90, paymentDelayHours: 24 },
   ];
   for (const p of products) {
     await prisma.investmentProduct.create({ data: p });
   }
-  console.log(`✅ Created ${products.length} Palantir AI VIP products`);
+  console.log(`✅ Created ${products.length} BSCXAU VIP products`);
 
   // Seed sample tasks
   const taskCount = await prisma.task.count();
