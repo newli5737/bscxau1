@@ -8,6 +8,10 @@ const inter = Inter({ subsets: ['latin', 'vietnamese'] });
 export const metadata: Metadata = {
   title: "BscXau - Đầu tư & Kiếm tiền",
   description: "Nền tảng đầu tư và kiếm tiền trực tuyến hàng đầu",
+  icons: {
+    icon: '/icon.png',
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({
